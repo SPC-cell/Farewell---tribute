@@ -1,12 +1,12 @@
 // 1. Password Protection Logic
-const accessCode = "Liz2026"; // Change this to your preferred password
+const accessCode = "Hi"; 
 const userEntry = prompt("Please enter the Access Code to view the Tribute:");
 
 if (userEntry !== accessCode) {
     alert("Access Denied. Please refresh and try again.");
     document.body.innerHTML = "<div style='color:#d4af37; text-align:center; margin-top:100px;'><h1>Private Tribute</h1><p>Contact Sourav for access.</p></div>";
 } else {
-    // 2. The Rest of your Presentation Logic (Only runs if password is correct)
+    // 2. Presentation Data
     const slideshow = [
         { file: "1.jpg", text: "Honoring a career built on integrity and vision." },
         { file: "2.jpg", text: "Leading by example: The foundation of our team's success." },
@@ -25,17 +25,13 @@ if (userEntry !== accessCode) {
     const bgMusic = document.getElementById('bg-music');
     const swish = document.getElementById('swish');
 
-    // This function is triggered by the button
+    // 3. Start Function
     window.startShow = function() {
-        console.log("Show Starting...");
         btn.classList.add('hidden');
-        
-        // Force Unlock Audio
         if(bgMusic) {
             bgMusic.volume = 0.4;
-            bgMusic.play().catch(e => console.log("Audio waiting for interaction..."));
+            bgMusic.play().catch(e => console.log("Audio waiting..."));
         }
-        
         runShow();
     };
 
@@ -46,29 +42,24 @@ if (userEntry !== accessCode) {
             caption.innerText = slideshow[currentIndex].text;
 
             setTimeout(() => {
-                // Restricted Swish (Opening)
                 if(swish) {
                     swish.currentTime = 0;
                     swish.play().catch(e => {});
                     setTimeout(() => { swish.pause(); }, 2000); 
                 }
-
                 stage.classList.add('open');
                 photo.style.opacity = "1";
                 caption.style.opacity = "1";
 
                 setTimeout(() => {
-                    // Restricted Swish (Closing)
                     if(swish) {
                         swish.currentTime = 0;
                         swish.play().catch(e => {});
                         setTimeout(() => { swish.pause(); }, 2000);
                     }
-
                     stage.classList.remove('open');
                     photo.style.opacity = "0";
                     caption.style.opacity = "0";
-
                     currentIndex++;
                     setTimeout(runShow, 3500); 
                 }, 7000); 
@@ -82,17 +73,9 @@ if (userEntry !== accessCode) {
         photo.style.display = "none";
         caption.style.display = "none";
         finalSlide.style.display = "block";
-
         setTimeout(() => {
-            if(swish) {
-                swish.currentTime = 0;
-                swish.play().catch(e => {});
-                setTimeout(() => { swish.pause(); }, 2000);
-            }
             stage.classList.add('open');
             finalSlide.style.opacity = "1";
-
-            // Fade out music slowly
             let fade = setInterval(() => {
                 if (bgMusic.volume > 0.02) bgMusic.volume -= 0.02;
                 else { bgMusic.pause(); clearInterval(fade); }
