@@ -144,8 +144,8 @@ function runShow() {
             if(swish) {
                 swish.currentTime = 0; // Start at 0.0 seconds
                 swish.play().catch(e => {});
-                // Stop the swish after 2 seconds so it doesn't "run along"
-                setTimeout(() => { swish.pause(); }, 2000); 
+                // Stop the swish after 1 seconds so it doesn't "run along"
+                setTimeout(() => { swish.pause(); }, 1000); 
             }
             
             stage.classList.add('open');
@@ -157,8 +157,8 @@ function runShow() {
                 if(swish) {
                     swish.currentTime = 0;
                     swish.play().catch(e => {});
-                    // Stop the swish after 2 seconds
-                    setTimeout(() => { swish.pause(); }, 2000);
+                    // Stop the swish after 1 seconds
+                    setTimeout(() => { swish.pause(); }, 1000);
                 }
                 
                 stage.classList.remove('open');
