@@ -134,55 +134,52 @@
         const swish = document.getElementById('swish');
 
         function startShow() {
-            btn.classList.add('hidden');
-            bgMusic.volume = 0.4;
-            bgMusic.play().catch(e => {});
-            runShow();
-        }
+    btn.classList.add('hidden');
+    
+    // 1. Start the Background Music only
+    bgMusic.volume = 0.4;
+    bgMusic.play().catch(e => console.log("Music blocked: " + e));
 
-        function runShow() {
-            if (currentIndex < slideshow.length) {
-                photo.style.opacity = "0"; 
-                photo.src = slideshow[currentIndex].file;
-                caption.innerText = slideshow[currentIndex].text;
+    // 2. Start the sequence
+    runShow();
+}
 
-                setTimeout(() => {
-                    stage.classList.add('open');
-                    photo.style.opacity = "1"; // Fade in after curtains start moving
-                    caption.style.opacity = "1";
-                    if(swish) swish.play().catch(e => {});
+function runShow() {
+    if (currentIndex < slideshow.length) {
+        photo.style.opacity = "0"; 
+        photo.src = slideshow[currentIndex].file;
+        caption.innerText = slideshow[currentIndex].text;
 
-                    setTimeout(() => {
-                        stage.classList.remove('open');
-                        photo.style.opacity = "0"; // Fade out as curtains close
-                        caption.style.opacity = "0";
-                        if(swish) swish.play().catch(e => {});
-
-                        currentIndex++;
-                        setTimeout(runShow, 4000); 
-                    }, 7000); // 7 Seconds viewing time for senior tribute
-                }, 1000);
-            } else {
-                showFinalThankYou();
+        setTimeout(() => {
+            // 3. Trigger the 'swish' ONLY when curtains move
+            if(swish) {
+                swish.currentTime = 0; // Reset sound to start
+                swish.play().catch(e => {});
             }
-        }
-
-        function showFinalThankYou() {
-            photo.style.display = "none";
-            caption.style.display = "none";
-            finalSlide.style.display = "block";
+            
+            stage.classList.add('open');
+            photo.style.opacity = "1";
+            caption.style.opacity = "1";
 
             setTimeout(() => {
-                stage.classList.add('open');
-                finalSlide.style.opacity = "1";
-                if(swish) swish.play().catch(e => {});
+                // 4. Trigger 'swish' again when curtains close
+                if(swish) {
+                    swish.currentTime = 0;
+                    swish.play().catch(e => {});
+                }
+                
+                stage.classList.remove('open');
+                photo.style.opacity = "0";
+                caption.style.opacity = "0";
 
-                let fade = setInterval(() => {
-                    if (bgMusic.volume > 0.02) bgMusic.volume -= 0.02;
-                    else { bgMusic.pause(); clearInterval(fade); }
-                }, 1000);
-            }, 1500);
-        }
+                currentIndex++;
+                setTimeout(runShow, 3000); // Time between slides
+            }, 7000); // Time photo stays visible
+        }, 1000);
+    } else {
+        showFinalThankYou();
+    }
+}
     </script>
 </body>
 </html>
