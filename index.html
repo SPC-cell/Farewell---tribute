@@ -133,17 +133,6 @@
         const bgMusic = document.getElementById('bg-music');
         const swish = document.getElementById('swish');
 
-        function startShow() {
-    btn.classList.add('hidden');
-    
-    // 1. Start the Background Music only
-    bgMusic.volume = 0.4;
-    bgMusic.play().catch(e => console.log("Music blocked: " + e));
-
-    // 2. Start the sequence
-    runShow();
-}
-
 function runShow() {
     if (currentIndex < slideshow.length) {
         photo.style.opacity = "0"; 
@@ -151,10 +140,12 @@ function runShow() {
         caption.innerText = slideshow[currentIndex].text;
 
         setTimeout(() => {
-            // 3. Trigger the 'swish' ONLY when curtains move
+            // PLAY SWISH (Opening)
             if(swish) {
-                swish.currentTime = 0; // Reset sound to start
+                swish.currentTime = 0; // Start at 0.0 seconds
                 swish.play().catch(e => {});
+                // Stop the swish after 2 seconds so it doesn't "run along"
+                setTimeout(() => { swish.pause(); }, 2000); 
             }
             
             stage.classList.add('open');
@@ -162,10 +153,12 @@ function runShow() {
             caption.style.opacity = "1";
 
             setTimeout(() => {
-                // 4. Trigger 'swish' again when curtains close
+                // PLAY SWISH (Closing)
                 if(swish) {
                     swish.currentTime = 0;
                     swish.play().catch(e => {});
+                    // Stop the swish after 2 seconds
+                    setTimeout(() => { swish.pause(); }, 2000);
                 }
                 
                 stage.classList.remove('open');
@@ -173,8 +166,8 @@ function runShow() {
                 caption.style.opacity = "0";
 
                 currentIndex++;
-                setTimeout(runShow, 3000); // Time between slides
-            }, 7000); // Time photo stays visible
+                setTimeout(runShow, 3000); 
+            }, 7000); 
         }, 1000);
     } else {
         showFinalThankYou();
