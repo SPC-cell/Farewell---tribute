@@ -158,7 +158,7 @@
                     if(swish) {
                         swish.currentTime = 0;
                         swish.play().catch(e => {});
-                        setTimeout(() => { swish.pause(); }, 1000); // Kill swish after 2s
+                        setTimeout(() => { swish.pause(); }, 2000); // Kill swish after 2s
                     }
 
                     stage.classList.add('open');
@@ -170,7 +170,7 @@
                         if(swish) {
                             swish.currentTime = 0;
                             swish.play().catch(e => {});
-                            setTimeout(() => { swish.pause(); }, 1000);
+                            setTimeout(() => { swish.pause(); }, 2000);
                         }
 
                         stage.classList.remove('open');
@@ -195,7 +195,7 @@
                 if(swish) {
                     swish.currentTime = 0;
                     swish.play().catch(e => {});
-                    setTimeout(() => { swish.pause(); }, 1000);
+                    setTimeout(() => { swish.pause(); }, 2000);
                 }
                 stage.classList.add('open');
                 finalSlide.style.opacity = "1";
