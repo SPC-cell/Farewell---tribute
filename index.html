@@ -133,6 +133,16 @@
         const bgMusic = document.getElementById('bg-music');
         const swish = document.getElementById('swish');
 
+function startShow() {
+    btn.classList.add('hidden');
+    
+    // START CONTINUOUS MUSIC
+    bgMusic.volume = 0.4;
+    bgMusic.play().catch(e => console.log("Music blocked: " + e));
+
+    runShow();
+}
+
 function runShow() {
     if (currentIndex < slideshow.length) {
         photo.style.opacity = "0"; 
@@ -140,12 +150,12 @@ function runShow() {
         caption.innerText = slideshow[currentIndex].text;
 
         setTimeout(() => {
-            // PLAY SWISH (Opening)
+            // OPEN CURTAINS + RESTRICTED SWISH
             if(swish) {
-                swish.currentTime = 0; // Start at 0.0 seconds
+                swish.currentTime = 0; 
                 swish.play().catch(e => {});
-                // Stop the swish after 1 seconds so it doesn't "run along"
-                setTimeout(() => { swish.pause(); }, 1000); 
+                // Kill swish after 2 seconds
+                setTimeout(() => { swish.pause(); }, 2000); 
             }
             
             stage.classList.add('open');
@@ -153,12 +163,12 @@ function runShow() {
             caption.style.opacity = "1";
 
             setTimeout(() => {
-                // PLAY SWISH (Closing)
+                // CLOSE CURTAINS + RESTRICTED SWISH
                 if(swish) {
                     swish.currentTime = 0;
                     swish.play().catch(e => {});
-                    // Stop the swish after 1 seconds
-                    setTimeout(() => { swish.pause(); }, 1000);
+                    // Kill swish after 2 seconds
+                    setTimeout(() => { swish.pause(); }, 2000);
                 }
                 
                 stage.classList.remove('open');
