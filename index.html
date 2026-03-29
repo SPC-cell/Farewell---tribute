@@ -1,212 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Grand Finale - A Tribute to Excellence</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+// 1. Password Protection Logic
+const accessCode = "Liz2026"; // Change this to your preferred password
+const userEntry = prompt("Please enter the Access Code to view the Tribute:");
 
-        body {
-            margin: 0; padding: 0;
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh; background-color: #030303;
-            font-family: 'Playfair Display', serif;
-            overflow: hidden; color: #d4af37;
-        }
+if (userEntry !== accessCode) {
+    alert("Access Denied. Please refresh and try again.");
+    document.body.innerHTML = "<div style='color:#d4af37; text-align:center; margin-top:100px;'><h1>Private Tribute</h1><p>Contact Sourav for access.</p></div>";
+} else {
+    // 2. The Rest of your Presentation Logic (Only runs if password is correct)
+    const slideshow = [
+        { file: "1.jpg", text: "Honoring a career built on integrity and vision." },
+        { file: "2.jpg", text: "Leading by example: The foundation of our team's success." },
+        { file: "3.jpg", text: "Your mentorship has been the compass for our professional growth." },
+        { file: "5.jpg", text: "Celebrating the milestones and the impact of your journey." },
+        { file: "6.jpg", text: "A legacy of excellence that will continue to inspire us." },
+        { file: "12.jpg", text: "Wishing you a retirement as remarkable as your career." }
+    ];
 
-        #stage-container {
-            position: relative;
-            width: 100vw; height: 100vh;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000 80%);
-            overflow: hidden;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
+    let currentIndex = 0;
+    const stage = document.getElementById('stage-container');
+    const photo = document.getElementById('photo');
+    const caption = document.getElementById('caption');
+    const btn = document.getElementById('welcome-btn');
+    const finalSlide = document.getElementById('final-slide');
+    const bgMusic = document.getElementById('bg-music');
+    const swish = document.getElementById('swish');
 
-        /* The Spotlight Effect */
-        .spotlight {
-            position: absolute;
-            width: 800px; height: 800px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, transparent 70%);
-            z-index: 0; pointer-events: none;
-        }
-
-        #photo {
-            max-width: 75%; max-height: 60%;
-            object-fit: contain;
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 2s ease-in-out;
-            filter: contrast(1.05);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-        }
-
-        #caption {
-            position: absolute; bottom: 12%;
-            width: 70%; text-align: center;
-            font-size: 26px; font-style: italic;
-            color: #d4af37; text-shadow: 0 2px 10px #000;
-            opacity: 0; transition: opacity 1.5s ease;
-            z-index: 2; line-height: 1.6;
-            letter-spacing: 0.8px;
-        }
-
-        /* Premium Curtains */
-        .curtain {
-            position: absolute; top: 0; width: 50.5%; height: 100%;
-            background: #000c1a; 
-            background-image: 
-                linear-gradient(90deg, rgba(0,0,0,0.4) 0%, transparent 50%, rgba(0,0,0,0.4) 100%),
-                repeating-linear-gradient(90deg, #001226 0px, #001226 2px, #001a33 4px, #001a33 40px);
-            transition: transform 3.5s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 5;
-        }
-
-        .curtain-left { left: 0; border-right: 1px solid rgba(212, 175, 55, 0.4); }
-        .curtain-right { right: 0; border-left: 1px solid rgba(212, 175, 55, 0.4); }
-
-        .open .curtain-left { transform: translateX(-100%) skewY(-1deg); }
-        .open .curtain-right { transform: translateX(100%) skewY(1deg); }
-
-        /* The Gold Start Button */
-        #welcome-btn {
-            position: absolute; z-index: 10;
-            padding: 25px 60px; font-size: 18px;
-            background: none; color: #d4af37;
-            border: 1px solid #d4af37; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 6px;
-            transition: all 0.8s ease;
-        }
-        #welcome-btn:hover { background: rgba(212, 175, 55, 0.1); letter-spacing: 10px; box-shadow: 0 0 40px rgba(212, 175, 55, 0.2); }
-        #welcome-btn.hidden { opacity: 0; pointer-events: none; }
-
-        /* Final Slide - Gold Metallic Text */
-        #final-slide {
-            position: absolute; z-index: 2;
-            text-align: center; opacity: 0;
-            transition: opacity 4s ease;
-            max-width: 850px; display: none;
-        }
-        #final-slide h1 { 
-            font-size: 80px; margin-bottom: 20px; font-weight: 400; letter-spacing: 12px; text-transform: uppercase;
-            background: linear-gradient(to bottom, #d4af37 0%, #f7e08a 50%, #d4af37 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        #final-slide p { font-size: 24px; line-height: 1.8; color: #e0e0e0; font-style: italic; }
-    </style>
-</head>
-<body>
-
-    <audio id="bg-music" loop src="./music.mp3"></audio>
-    <audio id="swish" src="./swish.mp3"></audio>
-
-    <div id="stage-container">
-        <div class="spotlight"></div>
-        <button id="welcome-btn" onclick="startShow()">Begin the Tribute</button>
+    // This function is triggered by the button
+    window.startShow = function() {
+        console.log("Show Starting...");
+        btn.classList.add('hidden');
         
-        <img id="photo" src="" alt="">
-        <div id="caption"></div>
-
-        <div id="final-slide">
-            <h1>Thank You</h1>
-            <p>For the mentorship that guided us, the leadership that inspired us, and the legacy that will remain long after the final curtain falls.</p>
-            <p style="margin-top: 60px; color: #d4af37; font-size: 30px; letter-spacing: 4px;">— With Gratitude, Sourav</p>
-        </div>
-
-        <div class="curtain curtain-left"></div>
-        <div class="curtain curtain-right"></div>
-    </div>
-
-    <script>
-        const slideshow = [
-            { file: "1.jpg", text: "Honoring a career built on integrity and vision." },
-            { file: "2.jpg", text: "Leading by example: The foundation of our team's success." },
-            { file: "3.jpg", text: "Your mentorship has been the compass for our professional growth." },
-            { file: "5.jpg", text: "Celebrating the milestones and the impact of your journey." },
-            { file: "6.jpg", text: "A legacy of excellence that will continue to inspire us." },
-            { file: "12.jpg", text: "Wishing you a retirement as remarkable as your career." }
-        ];
-
-        let currentIndex = 0;
-        const stage = document.getElementById('stage-container');
-        const photo = document.getElementById('photo');
-        const caption = document.getElementById('caption');
-        const btn = document.getElementById('welcome-btn');
-        const finalSlide = document.getElementById('final-slide');
-        const bgMusic = document.getElementById('bg-music');
-        const swish = document.getElementById('swish');
-
-        function startShow() {
-            btn.classList.add('hidden');
-            
-            // Unlocking Audio for Chrome/Edge in India
+        // Force Unlock Audio
+        if(bgMusic) {
             bgMusic.volume = 0.4;
-            bgMusic.play().catch(e => console.log("Audio block: " + e));
-            
-            runShow();
+            bgMusic.play().catch(e => console.log("Audio waiting for interaction..."));
         }
+        
+        runShow();
+    };
 
-        function runShow() {
-            if (currentIndex < slideshow.length) {
-                photo.style.opacity = "0"; 
-                photo.src = slideshow[currentIndex].file;
-                caption.innerText = slideshow[currentIndex].text;
-
-                setTimeout(() => {
-                    // Restricted Swish Trigger (Opening)
-                    if(swish) {
-                        swish.currentTime = 0;
-                        swish.play().catch(e => {});
-                        setTimeout(() => { swish.pause(); }, 2000); // Kill swish after 2s
-                    }
-
-                    stage.classList.add('open');
-                    photo.style.opacity = "1";
-                    caption.style.opacity = "1";
-
-                    setTimeout(() => {
-                        // Restricted Swish Trigger (Closing)
-                        if(swish) {
-                            swish.currentTime = 0;
-                            swish.play().catch(e => {});
-                            setTimeout(() => { swish.pause(); }, 2000);
-                        }
-
-                        stage.classList.remove('open');
-                        photo.style.opacity = "0";
-                        caption.style.opacity = "0";
-
-                        currentIndex++;
-                        setTimeout(runShow, 3500); // Buffer time curtains closed
-                    }, 7000); // Photo viewing time
-                }, 1000);
-            } else {
-                showFinalThankYou();
-            }
-        }
-
-        function showFinalThankYou() {
-            photo.style.display = "none";
-            caption.style.display = "none";
-            finalSlide.style.display = "block";
+    function runShow() {
+        if (currentIndex < slideshow.length) {
+            photo.style.opacity = "0"; 
+            photo.src = slideshow[currentIndex].file;
+            caption.innerText = slideshow[currentIndex].text;
 
             setTimeout(() => {
+                // Restricted Swish (Opening)
                 if(swish) {
                     swish.currentTime = 0;
                     swish.play().catch(e => {});
-                    setTimeout(() => { swish.pause(); }, 2000);
+                    setTimeout(() => { swish.pause(); }, 2000); 
                 }
-                stage.classList.add('open');
-                finalSlide.style.opacity = "1";
 
-                // Fade out music slowly over 8 seconds
-                let fade = setInterval(() => {
-                    if (bgMusic.volume > 0.02) bgMusic.volume -= 0.02;
-                    else { bgMusic.pause(); clearInterval(fade); }
-                }, 400);
-            }, 1500);
+                stage.classList.add('open');
+                photo.style.opacity = "1";
+                caption.style.opacity = "1";
+
+                setTimeout(() => {
+                    // Restricted Swish (Closing)
+                    if(swish) {
+                        swish.currentTime = 0;
+                        swish.play().catch(e => {});
+                        setTimeout(() => { swish.pause(); }, 2000);
+                    }
+
+                    stage.classList.remove('open');
+                    photo.style.opacity = "0";
+                    caption.style.opacity = "0";
+
+                    currentIndex++;
+                    setTimeout(runShow, 3500); 
+                }, 7000); 
+            }, 1000);
+        } else {
+            showFinalThankYou();
         }
-    </script>
-</body>
-</html>
+    }
+
+    function showFinalThankYou() {
+        photo.style.display = "none";
+        caption.style.display = "none";
+        finalSlide.style.display = "block";
+
+        setTimeout(() => {
+            if(swish) {
+                swish.currentTime = 0;
+                swish.play().catch(e => {});
+                setTimeout(() => { swish.pause(); }, 2000);
+            }
+            stage.classList.add('open');
+            finalSlide.style.opacity = "1";
+
+            // Fade out music slowly
+            let fade = setInterval(() => {
+                if (bgMusic.volume > 0.02) bgMusic.volume -= 0.02;
+                else { bgMusic.pause(); clearInterval(fade); }
+            }, 400);
+        }, 1500);
+    }
+}
